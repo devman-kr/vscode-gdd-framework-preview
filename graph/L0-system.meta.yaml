@@ -1,0 +1,54 @@
+graph: L0-system.mermaid
+level: 0
+description: "VSCode GDD Framework Preview 확장 시스템 조감도"
+last_updated: 2026-03-07
+
+nodes:
+  Extension:
+    owner: "@devman-kr"
+    status: active
+    description: "VSCode 확장 진입점. 명령 등록, Provider 초기화, 이벤트 바인딩을 담당한다."
+    tech_stack: ["TypeScript", "VSCode Extension API"]
+
+  GraphEngine:
+    child_graph: graph-engine/L1-graph-engine.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: ".mermaid 및 .meta.yaml 파일을 파싱하고 GDD 트리 구조를 관리하는 데이터 레이어"
+    tech_stack: ["TypeScript", "yaml"]
+
+  Viewer:
+    child_graph: viewer/L1-viewer.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "Mermaid.js 기반 그래프 시각화, 노드 인터랙션(클릭/더블클릭), 레이어 간 탐색 기능"
+    tech_stack: ["TypeScript", "Mermaid.js", "VSCode Webview API"]
+
+  Preview:
+    child_graph: preview/L1-preview.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: ".mermaid 파일을 에디터에서 열었을 때 Markdown Preview처럼 그래프를 미리 볼 수 있는 기능"
+    tech_stack: ["TypeScript", "Mermaid.js", "VSCode Webview API"]
+
+edges:
+  - from: Extension
+    to: GraphEngine
+    type: requires
+    contract: "GddGraph 객체 반환 (파싱된 그래프 데이터)"
+  - from: Extension
+    to: Viewer
+    type: requires
+    contract: "WebviewPanel 생성 및 그래프 렌더링 요청"
+  - from: Extension
+    to: Preview
+    type: requires
+    contract: ".mermaid 파일 감지 시 프리뷰 명령 등록"
+  - from: Viewer
+    to: GraphEngine
+    type: requires
+    contract: "특정 .mermaid 파일의 GddGraph 데이터 요청"
+  - from: Preview
+    to: GraphEngine
+    type: requires
+    contract: "단일 .mermaid 파일의 파싱 결과 요청"

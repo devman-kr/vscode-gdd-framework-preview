@@ -1,0 +1,62 @@
+graph: L2-file-detector.mermaid
+level: 2
+parent_node: FileDetector
+parent_graph: L1-preview.mermaid
+description: "FileDetector의 구현 상세. VSCode의 activeTextEditor 변경을 감시하여 .mermaid 파일 활성화를 감지하고, 컨텍스트를 설정하여 타이틀바 아이콘 표시를 제어한다."
+last_updated: 2026-03-07
+
+nodes:
+  EditorListener:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.window.onDidChangeActiveTextEditor 이벤트를 구독하여 활성 에디터 변경을 감지한다."
+    source_file: "src/preview/fileDetector.ts"
+
+  ExtChecker:
+    owner: "@devman-kr"
+    status: planned
+    description: "활성 에디터의 파일 확장자가 .mermaid인지 판별한다."
+    source_file: "src/preview/fileDetector.ts"
+
+  ContextReset:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid 파일이 아닐 때 vscode.commands.executeCommand('setContext', 'gdd.mermaidActive', false)를 호출하여 타이틀바 아이콘을 숨긴다."
+    source_file: "src/preview/fileDetector.ts"
+
+  MetaProbe:
+    owner: "@devman-kr"
+    status: planned
+    description: "활성 .mermaid 파일과 동일 이름의 .meta.yaml 파일이 존재하는지 파일시스템에서 확인한다."
+    source_file: "src/preview/fileDetector.ts"
+
+  ContextSet:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.commands.executeCommand('setContext', 'gdd.mermaidActive', true)를 호출하여 타이틀바 아이콘을 표시한다. meta 존재 여부도 함께 설정한다."
+    source_file: "src/preview/fileDetector.ts"
+
+  EventEmitter:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid 파일 활성화 시 onMermaidFileActivated 이벤트를 발행하여 다른 모듈에 알린다."
+    source_file: "src/preview/fileDetector.ts"
+
+edges:
+  - from: EditorListener
+    to: ExtChecker
+    label: "활성 TextEditor 객체 전달"
+  - from: ExtChecker
+    to: ContextReset
+    label: ".mermaid 확장자 아닌 경우"
+  - from: ExtChecker
+    to: MetaProbe
+    label: ".mermaid 확장자 확인됨"
+  - from: MetaProbe
+    to: ContextSet
+    type: requires
+    contract: "{ uri: vscode.Uri, hasMeta: boolean } 전달"
+  - from: ContextSet
+    to: EventEmitter
+    type: requires
+    contract: "MermaidFileEvent { uri, hasMeta } 발행"

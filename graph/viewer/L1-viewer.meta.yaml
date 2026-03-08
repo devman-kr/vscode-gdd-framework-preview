@@ -1,0 +1,62 @@
+graph: L1-viewer.mermaid
+level: 1
+parent_node: Viewer
+parent_graph: ../L0-system.mermaid
+description: "Viewer 도메인 내부 기능 흐름. Mermaid.js 기반 그래프 시각화, 노드 인터랙션, 레이어 간 탐색을 담당한다."
+last_updated: 2026-03-07
+
+nodes:
+  WebviewManager:
+    child_graph: L2-webview-manager.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "VSCode WebviewPanel을 생성하고 관리한다. 그래프 데이터를 받아 Webview HTML을 갱신한다."
+    source_file: "src/viewer/webviewManager.ts"
+
+  MermaidRenderer:
+    child_graph: L2-mermaid-renderer.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "Webview 내에서 Mermaid.js를 사용하여 그래프를 렌더링한다. 노드 클릭/더블클릭 이벤트를 감지한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  NodeInteraction:
+    child_graph: L2-node-interaction.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "노드 클릭 이벤트를 처리한다. 클릭된 노드의 메타데이터를 MetadataOpener에 전달한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  Navigation:
+    child_graph: L2-navigation.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "레이어 간 이동(drill-down, back)을 관리한다. NavigationStack으로 경로 히스토리를 유지한다."
+    source_file: "src/viewer/navigation.ts"
+
+  MetadataOpener:
+    child_graph: L2-metadata-opener.mermaid
+    owner: "@devman-kr"
+    status: active
+    description: "노드 클릭 시 해당 노드의 .meta.yaml 파일을 VSCode Split Editor로 연다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+edges:
+  - from: WebviewManager
+    to: MermaidRenderer
+    type: requires
+    contract: "mermaid 텍스트와 노드 메타데이터를 전달하여 렌더링 요청"
+  - from: MermaidRenderer
+    to: NodeInteraction
+    label: "postMessage로 클릭된 노드 ID 전달"
+  - from: MermaidRenderer
+    to: Navigation
+    label: "postMessage로 더블클릭된 노드 ID 전달"
+  - from: NodeInteraction
+    to: MetadataOpener
+    type: requires
+    contract: "노드 ID와 meta.yaml 파일 경로를 전달"
+  - from: Navigation
+    to: WebviewManager
+    type: requires
+    contract: "이동할 그래프 파일 경로를 전달하여 Webview 갱신 요청"

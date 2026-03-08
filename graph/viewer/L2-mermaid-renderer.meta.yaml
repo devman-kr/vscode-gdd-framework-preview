@@ -1,0 +1,82 @@
+graph: L2-mermaid-renderer.mermaid
+level: 2
+parent_node: MermaidRenderer
+parent_graph: L1-viewer.mermaid
+description: "MermaidRenderer의 구현 상세. mermaid 텍스트에 메타 기반 스타일을 주입하고, mermaid.js로 SVG를 렌더링한 뒤, 노드 클릭/더블클릭 이벤트를 Extension에 전달한다."
+last_updated: 2026-03-07
+
+nodes:
+  GraphDataReceiver:
+    owner: "@devman-kr"
+    status: planned
+    description: "WebviewManager로부터 mermaid 텍스트와 노드 메타데이터(status, child_graph 유무 등)를 수신한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  NodeDecorator:
+    owner: "@devman-kr"
+    status: planned
+    description: "메타데이터 기반으로 mermaid 텍스트에 classDef/class를 추가한다. status별 색상, child_graph 있는 노드에 드릴다운 표시 등."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  ThemeResolver:
+    owner: "@devman-kr"
+    status: planned
+    description: "VSCode의 현재 색상 테마(vscode.window.activeColorTheme)를 감지하여 mermaid 테마(dark, default, neutral)를 결정한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  RenderEngine:
+    owner: "@devman-kr"
+    status: planned
+    description: "mermaid.initialize()로 설정 적용 후 mermaid.render()를 호출하여 SVG를 생성한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  SvgInjector:
+    owner: "@devman-kr"
+    status: planned
+    description: "렌더링된 SVG 문자열을 Webview의 그래프 컨테이너 DOM 요소에 삽입한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  ClickBinder:
+    owner: "@devman-kr"
+    status: planned
+    description: "SVG 내 각 노드 요소에 click, dblclick 이벤트 리스너를 등록한다. 노드 ID를 추출하여 이벤트 데이터를 구성한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  MessageSender:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.postMessage를 호출하여 클릭/더블클릭 이벤트를 Extension 측 MessageHandler로 전달한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+  ErrorOverlay:
+    owner: "@devman-kr"
+    status: planned
+    description: "mermaid 렌더링 실패 시 에러 메시지를 오버레이로 표시한다. 구문 오류 위치 등을 포함한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
+
+edges:
+  - from: GraphDataReceiver
+    to: NodeDecorator
+    type: requires
+    contract: "{ mermaidText: string, nodeMeta: Map<string, NodeMeta> } 전달"
+  - from: NodeDecorator
+    to: ThemeResolver
+    label: "스타일 주입된 mermaid 텍스트 전달"
+  - from: ThemeResolver
+    to: RenderEngine
+    type: requires
+    contract: "{ text: string, theme: string } 전달"
+  - from: RenderEngine
+    to: SvgInjector
+    type: requires
+    contract: "SVG 문자열 전달"
+  - from: SvgInjector
+    to: ClickBinder
+    label: "삽입된 SVG DOM 노드 전달"
+  - from: ClickBinder
+    to: MessageSender
+    type: requires
+    contract: "{ type: 'nodeClick' | 'nodeDblClick', nodeId: string } 전달"
+  - from: RenderEngine
+    to: ErrorOverlay
+    label: "렌더링 에러 객체 전달"

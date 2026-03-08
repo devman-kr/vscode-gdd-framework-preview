@@ -1,0 +1,78 @@
+graph: L2-preview-panel.mermaid
+level: 2
+parent_node: PreviewPanel
+parent_graph: L1-preview.mermaid
+description: "PreviewPanel의 구현 상세. WebviewPanel을 생성하고, .mermaid 파일 내용을 로드하여 HTML로 조립하고, 에디터 변경 시 자동 동기화한다."
+last_updated: 2026-03-07
+
+nodes:
+  PanelFactory:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.window.createWebviewPanel로 WebviewPanel을 생성한다. 이미 열려 있으면 기존 패널을 재사용(reveal)한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  ContentLoader:
+    owner: "@devman-kr"
+    status: planned
+    description: "전달받은 URI로 .mermaid 파일의 텍스트 내용을 읽어온다. workspace.fs.readFile을 사용한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  HtmlBuilder:
+    owner: "@devman-kr"
+    status: planned
+    description: "mermaid 텍스트를 포함하는 Webview용 HTML 문서를 생성한다. mermaid.js CDN 스크립트와 CSP 메타 태그를 포함한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  WebviewSetter:
+    owner: "@devman-kr"
+    status: planned
+    description: "생성된 HTML 문자열을 webviewPanel.webview.html에 할당하여 렌더링한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  ColumnResolver:
+    owner: "@devman-kr"
+    status: planned
+    description: "현재 활성 에디터의 ViewColumn을 기준으로 프리뷰 패널을 옆 컬럼(Beside)에 표시할 위치를 결정한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  SyncWatcher:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.workspace.onDidChangeTextDocument를 감시하여, 열린 .mermaid 파일이 수정되면 프리뷰를 자동 갱신한다."
+    source_file: "src/preview/previewPanel.ts"
+
+  DisposeHandler:
+    owner: "@devman-kr"
+    status: planned
+    description: "WebviewPanel이 닫힐 때(onDidDispose) 이벤트 리스너와 리소스를 정리한다."
+    source_file: "src/preview/previewPanel.ts"
+
+edges:
+  - from: PanelFactory
+    to: ContentLoader
+    type: requires
+    contract: "WebviewPanel 인스턴스와 .mermaid URI 전달"
+  - from: ContentLoader
+    to: HtmlBuilder
+    type: requires
+    contract: "mermaid 텍스트 문자열 전달"
+  - from: HtmlBuilder
+    to: WebviewSetter
+    type: requires
+    contract: "완성된 HTML 문자열 전달"
+  - from: PanelFactory
+    to: ColumnResolver
+    label: "활성 에디터 ViewColumn 조회"
+  - from: ColumnResolver
+    to: PanelFactory
+    label: "표시할 ViewColumn 반환"
+  - from: ContentLoader
+    to: SyncWatcher
+    label: "감시 대상 문서 URI 등록"
+  - from: SyncWatcher
+    to: HtmlBuilder
+    label: "변경된 mermaid 텍스트 전달"
+  - from: PanelFactory
+    to: DisposeHandler
+    label: "onDidDispose 콜백 등록"

@@ -1,0 +1,9 @@
+graph TD
+    RegisterGraph[그래프 등록<br/>GddGraph 저장] -->|GddGraph 객체| GraphCache[그래프 캐시<br/>Map 기반 인메모리 저장]
+    GraphCache -->|캐시 히트| QueryByPath[경로 기반 조회<br/>파일 경로로 검색]
+    GraphCache -->|캐시 히트| QueryByNode[노드 기반 조회<br/>노드 ID로 검색]
+    QueryByPath -->|GddGraph| ResultProvider[결과 제공<br/>조회 API]
+    QueryByNode -->|GddGraph| ResultProvider
+    InvalidateEvent[무효화 이벤트<br/>파일 변경 수신] -->|변경된 경로| GraphCache
+    GraphCache -->|전체 그래프 목록| TreeIndex[트리 인덱스<br/>L0-L1-L2 계층 색인]
+    TreeIndex -->|계층 탐색| ResultProvider

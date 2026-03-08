@@ -1,0 +1,9 @@
+graph TD
+    PanelFactory[패널 팩토리<br/>WebviewPanel 생성/재사용] -->|Webview 인스턴스| ContentLoader[콘텐츠 로더<br/>.mermaid 텍스트 로드]
+    ContentLoader -->|mermaid 텍스트| HtmlBuilder[HTML 빌더<br/>Webview HTML 조립]
+    HtmlBuilder -->|HTML 문자열| WebviewSetter[Webview 설정<br/>webview.html 할당]
+    PanelFactory -->|패널 옵션| ColumnResolver[컬럼 결정<br/>Split Editor 위치 계산]
+    ColumnResolver -->|ViewColumn| PanelFactory
+    ContentLoader -->|파일 변경 감시| SyncWatcher[동기화 감시<br/>에디터 변경 시 자동 갱신]
+    SyncWatcher -->|갱신된 텍스트| HtmlBuilder
+    PanelFactory -->|패널 dispose| DisposeHandler[리소스 해제<br/>이벤트 리스너 정리]

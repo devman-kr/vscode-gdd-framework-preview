@@ -1,0 +1,76 @@
+graph: L2-tree-builder.mermaid
+level: 2
+parent_node: TreeBuilder
+parent_graph: L1-graph-engine.mermaid
+description: "TreeBuilder의 구현 상세. MermaidParser와 MetaParser의 결과를 병합하고, 정합성을 검증한 뒤, parent-child 계층 구조를 갖는 GddGraph 객체를 생성한다."
+last_updated: 2026-03-07
+
+nodes:
+  InputReceiver:
+    owner: "@devman-kr"
+    status: planned
+    description: "MermaidParser의 ParsedMermaid와 MetaParser의 ParsedMeta를 입력으로 받는다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  NodeMerger:
+    owner: "@devman-kr"
+    status: planned
+    description: "ParsedMermaid의 노드 목록과 ParsedMeta의 노드 메타데이터를 노드 ID 기준으로 병합하여 GddNode를 생성한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  EdgeMerger:
+    owner: "@devman-kr"
+    status: planned
+    description: "ParsedMermaid의 엣지 목록과 ParsedMeta의 엣지 메타데이터를 from-to 기준으로 병합하여 GddEdge를 생성한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  Validator:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid에 정의된 노드와 .meta.yaml에 정의된 노드 목록이 일치하는지 검증한다. 불일치 시 ValidationReport로 전달한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  ValidationReport:
+    owner: "@devman-kr"
+    status: planned
+    description: "mermaid-meta 불일치, 고아 노드, 누락된 메타데이터 등의 검증 오류를 수집하여 보고한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  HierarchyLinker:
+    owner: "@devman-kr"
+    status: planned
+    description: "meta의 parent_graph, parent_node, child_graph 정보를 기반으로 GddNode 간 parent-child 계층 관계를 설정한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+  GraphAssembler:
+    owner: "@devman-kr"
+    status: planned
+    description: "병합된 노드, 엣지, 계층 관계를 조합하여 최종 GddGraph 객체를 생성한다."
+    source_file: "src/graphEngine/treeBuilder.ts"
+
+edges:
+  - from: InputReceiver
+    to: NodeMerger
+    label: "ParsedMermaid.nodes + ParsedMeta.nodes 전달"
+  - from: InputReceiver
+    to: EdgeMerger
+    label: "ParsedMermaid.edges + ParsedMeta.edges 전달"
+  - from: NodeMerger
+    to: Validator
+    type: requires
+    contract: "GddNode { id, label, shape, meta } 배열 반환"
+  - from: EdgeMerger
+    to: Validator
+    type: requires
+    contract: "GddEdge { from, to, label, type, contract, style } 배열 반환"
+  - from: Validator
+    to: ValidationReport
+    label: "검증 오류 목록 전달"
+  - from: Validator
+    to: HierarchyLinker
+    type: requires
+    contract: "검증 통과된 GddNode[], GddEdge[] 전달"
+  - from: HierarchyLinker
+    to: GraphAssembler
+    type: requires
+    contract: "계층 연결된 GddNode 트리 + GddEdge[] 전달"

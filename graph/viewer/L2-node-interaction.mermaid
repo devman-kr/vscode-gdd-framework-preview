@@ -1,0 +1,7 @@
+graph TD
+    ClickReceiver[클릭 수신<br/>nodeClick 메시지 처리] -->|노드 ID| MetaLookup[메타 조회<br/>GraphStore에서 노드 메타 검색]
+    MetaLookup -->|NodeMeta 존재| InfoPanel[정보 패널<br/>노드 요약 표시]
+    MetaLookup -->|NodeMeta 없음| FallbackDisplay[폴백 표시<br/>노드 ID만 표시]
+    InfoPanel -->|사용자 액션| MetaOpenTrigger[Meta 열기 트리거<br/>MetadataOpener 호출]
+    InfoPanel -->|source_file 존재| SourceJump[소스 이동<br/>source_file 열기]
+    ClickReceiver -->|선택 상태| HighlightManager[하이라이트 관리<br/>선택 노드 강조]

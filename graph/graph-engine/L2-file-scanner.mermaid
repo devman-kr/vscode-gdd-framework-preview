@@ -1,0 +1,8 @@
+graph TD
+    ConfigLoader[설정 로더<br/>.gdd.yaml에서 graph 경로 읽기] -->|graph 디렉토리 경로| DirWalker[디렉토리 탐색<br/>재귀적 파일 순회]
+    DirWalker -->|파일 경로 목록| ExtFilter[확장자 필터<br/>.mermaid/.meta.yaml 분류]
+    ExtFilter -->|.mermaid 경로| PairMatcher[파일 쌍 매칭<br/>mermaid-meta 1:1 매핑]
+    ExtFilter -->|.meta.yaml 경로| PairMatcher
+    PairMatcher -->|매칭 실패| MissingReport[누락 리포트<br/>쌍 없는 파일 경고]
+    PairMatcher -->|GraphFilePair 목록| FileWatcher[파일 감시<br/>변경 감지/이벤트 발행]
+    FileWatcher -->|변경 이벤트| ChangeEmitter[변경 이벤트 발행<br/>onDidChange 콜백]

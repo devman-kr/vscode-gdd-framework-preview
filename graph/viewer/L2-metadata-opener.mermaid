@@ -1,0 +1,6 @@
+graph TD
+    OpenRequest[열기 요청<br/>노드 ID + 그래프 경로] -->|그래프 경로| MetaPathResolver[Meta 경로 해석<br/>.mermaid → .meta.yaml 변환]
+    MetaPathResolver -->|meta 경로| FileExistChecker[파일 존재 확인<br/>workspace.fs.stat 호출]
+    FileExistChecker -->|존재함| SplitOpener[Split Editor 열기<br/>showTextDocument Beside]
+    FileExistChecker -->|존재 안 함| ErrorNotify[오류 알림<br/>meta.yaml 누락 경고]
+    SplitOpener -->|문서 열림| NodeHighlighter[노드 위치 이동<br/>해당 노드 섹션으로 스크롤]

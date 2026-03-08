@@ -1,0 +1,7 @@
+graph TD
+    NodeDblClick[노드 더블클릭] -->|child_graph 확인| ChildResolver[자식 그래프 해석<br/>경로 resolve]
+    ChildResolver -->|경로 전달| NavigationStack[NavigationStack<br/>경로 스택 관리]
+    BackButton[뒤로가기 버튼<br/>Webview 상단] -->|클릭| NavigationStack
+    ParentNode[Parent 노드<br/>L1~L2 최상단] -->|더블클릭| NavigationStack
+    NavigationStack -->|push/pop| StateManager[상태 관리<br/>현재 레이어 추적]
+    StateManager -->|그래프 갱신 요청| WebviewUpdate[Webview 갱신]

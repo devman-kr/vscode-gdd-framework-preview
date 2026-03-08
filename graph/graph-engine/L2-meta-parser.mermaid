@@ -1,0 +1,10 @@
+graph TD
+    YamlLoader[YAML 로더<br/>.meta.yaml 파일 읽기] -->|파싱된 객체| HeaderExtractor[헤더 추출<br/>level/parent 정보]
+    YamlLoader -->|파싱된 객체| NodeMetaExtractor[노드 메타 추출<br/>nodes 섹션 파싱]
+    YamlLoader -->|파싱된 객체| EdgeMetaExtractor[엣지 메타 추출<br/>edges 섹션 파싱]
+    HeaderExtractor -->|헤더 정보| ResultAssembler[결과 조립<br/>ParsedMeta 생성]
+    NodeMetaExtractor -->|NodeMeta 목록| ContractResolver[계약 해석<br/>contract/type 정규화]
+    EdgeMetaExtractor -->|EdgeMeta 목록| ContractResolver
+    NodeMetaExtractor -->|child_graph 참조| ChildGraphResolver[자식 그래프 해석<br/>경로 검증]
+    ContractResolver -->|정규화된 메타| ResultAssembler
+    ChildGraphResolver -->|검증된 경로| ResultAssembler

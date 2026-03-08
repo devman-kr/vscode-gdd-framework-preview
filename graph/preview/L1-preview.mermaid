@@ -1,0 +1,4 @@
+graph TD
+    FileDetector[파일 감지기<br/>.mermaid 파일 활성화 감지] -->|.mermaid 활성화| TitleBarIcon[타이틀바 아이콘<br/>에디터 상단 GDD 아이콘]
+    TitleBarIcon -->|클릭| PreviewPanel[프리뷰 패널<br/>Webview 생성/렌더링]
+    PreviewPanel -->|렌더링 요청| MermaidRenderer[Mermaid 렌더러<br/>그래프 표시]

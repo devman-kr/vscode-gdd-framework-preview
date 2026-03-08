@@ -1,0 +1,63 @@
+graph: L2-metadata-opener.mermaid
+level: 2
+parent_node: MetadataOpener
+parent_graph: L1-viewer.mermaid
+description: "MetadataOpener의 구현 상세. 클릭된 노드에 대응하는 .meta.yaml 파일을 찾아 Split Editor로 열고, 해당 노드 섹션으로 커서를 이동한다."
+last_updated: 2026-03-07
+
+nodes:
+  OpenRequest:
+    owner: "@devman-kr"
+    status: planned
+    description: "NodeInteraction으로부터 노드 ID와 현재 그래프 파일 경로를 전달받는다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+  MetaPathResolver:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid 파일 경로에서 확장자를 .meta.yaml로 변환하여 메타 파일 경로를 생성한다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+  FileExistChecker:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.workspace.fs.stat으로 메타 파일이 실제 존재하는지 확인한다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+  SplitOpener:
+    owner: "@devman-kr"
+    status: planned
+    description: "vscode.window.showTextDocument를 ViewColumn.Beside 옵션으로 호출하여 메타 파일을 Split Editor로 연다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+  ErrorNotify:
+    owner: "@devman-kr"
+    status: planned
+    description: "메타 파일이 존재하지 않을 때 vscode.window.showWarningMessage로 경고를 표시한다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+  NodeHighlighter:
+    owner: "@devman-kr"
+    status: planned
+    description: "열린 메타 파일에서 해당 노드 ID가 정의된 라인을 검색하여 커서를 이동(revealRange)한다."
+    source_file: "src/viewer/metadataOpener.ts"
+
+edges:
+  - from: OpenRequest
+    to: MetaPathResolver
+    type: requires
+    contract: "{ nodeId: string, graphPath: string } 전달"
+  - from: MetaPathResolver
+    to: FileExistChecker
+    type: requires
+    contract: "변환된 .meta.yaml 절대 경로 전달"
+  - from: FileExistChecker
+    to: SplitOpener
+    label: "파일 존재 확인됨"
+  - from: FileExistChecker
+    to: ErrorNotify
+    label: "파일 없음"
+  - from: SplitOpener
+    to: NodeHighlighter
+    type: requires
+    contract: "열린 TextDocument와 노드 ID 전달"

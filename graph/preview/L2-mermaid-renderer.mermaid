@@ -1,0 +1,8 @@
+graph TD
+    TextReceiver[텍스트 수신<br/>mermaid 원본 입력] -->|원본 텍스트| SyntaxValidator[구문 검증<br/>mermaid 문법 확인]
+    SyntaxValidator -->|유효| ThemeApplier[테마 적용<br/>다크/라이트 감지]
+    SyntaxValidator -->|무효| ErrorRenderer[오류 렌더링<br/>파싱 에러 표시]
+    ThemeApplier -->|테마 설정| MermaidInit[Mermaid 초기화<br/>mermaid.initialize 호출]
+    MermaidInit -->|초기화 완료| SvgRenderer[SVG 렌더링<br/>mermaid.render 실행]
+    SvgRenderer -->|SVG 문자열| DomInjector[DOM 주입<br/>Webview에 SVG 삽입]
+    SvgRenderer -->|렌더링 실패| ErrorRenderer

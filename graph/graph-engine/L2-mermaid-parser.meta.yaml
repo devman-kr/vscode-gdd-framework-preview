@@ -1,0 +1,80 @@
+graph: L2-mermaid-parser.mermaid
+level: 2
+parent_node: MermaidParser
+parent_graph: L1-graph-engine.mermaid
+description: "MermaidParser의 구현 상세. .mermaid 파일 텍스트를 파싱하여 노드 ID, 레이블, 엣지 정보, 스타일을 추출한다."
+last_updated: 2026-03-07
+
+nodes:
+  FileReader:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid 파일을 UTF-8 텍스트로 로드한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  DirectionParser:
+    owner: "@devman-kr"
+    status: planned
+    description: "첫 줄의 graph 키워드 뒤 방향(TD, LR, RL, BT)을 추출한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  LineSplitter:
+    owner: "@devman-kr"
+    status: planned
+    description: "텍스트를 줄 단위로 분할하고, 주석(%%)과 빈 줄을 제거한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  NodeExtractor:
+    owner: "@devman-kr"
+    status: planned
+    description: "각 라인에서 노드 정의를 정규식으로 추출한다. 노드 ID, 표시 레이블, 형태([], (), {})를 파싱한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  EdgeExtractor:
+    owner: "@devman-kr"
+    status: planned
+    description: "각 라인에서 엣지 정의(-->. -.->)를 정규식으로 추출한다. from, to, label을 파싱한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  StyleClassifier:
+    owner: "@devman-kr"
+    status: planned
+    description: "엣지의 화살표 스타일(실선 -->, 점선 -.->)을 분류한다. 점선은 이벤트/비동기 관계를 의미한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+  ResultAssembler:
+    owner: "@devman-kr"
+    status: planned
+    description: "추출된 방향, 노드, 엣지, 스타일 정보를 조합하여 ParsedMermaid 객체를 생성한다."
+    source_file: "src/graphEngine/mermaidParser.ts"
+
+edges:
+  - from: FileReader
+    to: DirectionParser
+    label: "원본 텍스트 전달"
+  - from: FileReader
+    to: LineSplitter
+    label: "원본 텍스트 전달"
+  - from: DirectionParser
+    to: ResultAssembler
+    label: "그래프 방향 전달"
+  - from: LineSplitter
+    to: NodeExtractor
+    label: "정제된 라인 목록 전달"
+  - from: LineSplitter
+    to: EdgeExtractor
+    label: "정제된 라인 목록 전달"
+  - from: NodeExtractor
+    to: ResultAssembler
+    type: requires
+    contract: "MermaidNode { id, label, shape } 배열 반환"
+  - from: EdgeExtractor
+    to: ResultAssembler
+    type: requires
+    contract: "MermaidEdge { from, to, label, style } 배열 반환"
+  - from: EdgeExtractor
+    to: StyleClassifier
+    label: "점선 엣지 스타일 판별 요청"
+  - from: StyleClassifier
+    to: ResultAssembler
+    label: "엣지별 스타일 정보 전달"

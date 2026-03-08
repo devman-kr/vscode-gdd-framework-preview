@@ -1,0 +1,6 @@
+graph TD
+    ContributionDef[Contribution 정의<br/>package.json 메뉴 등록] -->|메뉴 항목| WhenClause[When 조건<br/>gdd.mermaidActive 평가]
+    WhenClause -->|조건 충족| IconRender[아이콘 렌더링<br/>에디터 타이틀바 표시]
+    IconRender -->|클릭 이벤트| CommandDispatch[커맨드 디스패치<br/>gdd.openPreview 실행]
+    CommandDispatch -->|활성 에디터 URI| PreviewTrigger[프리뷰 트리거<br/>PreviewPanel 열기 요청]
+    WhenClause -->|조건 미충족| IconHide[아이콘 숨김<br/>타이틀바에서 제거]

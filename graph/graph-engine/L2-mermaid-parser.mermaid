@@ -1,0 +1,10 @@
+graph TD
+    FileReader[파일 리더<br/>.mermaid 텍스트 로드] -->|원본 텍스트| DirectionParser[방향 파서<br/>graph TD/LR 추출]
+    FileReader -->|원본 텍스트| LineSplitter[라인 분할<br/>줄 단위 토큰화]
+    DirectionParser -->|그래프 방향| ResultAssembler[결과 조립<br/>ParsedMermaid 생성]
+    LineSplitter -->|라인 목록| NodeExtractor[노드 추출<br/>ID/레이블 파싱]
+    LineSplitter -->|라인 목록| EdgeExtractor[엣지 추출<br/>연결/레이블 파싱]
+    NodeExtractor -->|MermaidNode 목록| ResultAssembler
+    EdgeExtractor -->|MermaidEdge 목록| ResultAssembler
+    EdgeExtractor -->|점선 엣지| StyleClassifier[스타일 분류<br/>실선/점선 구분]
+    StyleClassifier -->|엣지 스타일 정보| ResultAssembler

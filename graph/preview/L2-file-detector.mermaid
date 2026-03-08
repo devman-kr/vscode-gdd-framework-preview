@@ -1,0 +1,7 @@
+graph TD
+    EditorListener[에디터 리스너<br/>onDidChangeActiveTextEditor] -->|활성 에디터 변경| ExtChecker[확장자 검사<br/>.mermaid 여부 판별]
+    ExtChecker -->|.mermaid 아님| ContextReset[컨텍스트 해제<br/>gdd.mermaidActive = false]
+    ExtChecker -->|.mermaid 맞음| MetaProbe[Meta 탐색<br/>동명 .meta.yaml 존재 확인]
+    MetaProbe -->|meta 존재| ContextSet[컨텍스트 설정<br/>gdd.mermaidActive = true]
+    MetaProbe -->|meta 없음| ContextSet
+    ContextSet -->|상태 변경| EventEmitter[이벤트 발행<br/>onMermaidFileActivated]

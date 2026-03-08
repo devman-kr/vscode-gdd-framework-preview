@@ -1,0 +1,81 @@
+graph: L2-meta-parser.mermaid
+level: 2
+parent_node: MetaParser
+parent_graph: L1-graph-engine.mermaid
+description: "MetaParser의 구현 상세. .meta.yaml 파일을 파싱하여 레벨, 부모 관계, 노드별 메타데이터, 엣지 계약 정보를 추출한다."
+last_updated: 2026-03-07
+
+nodes:
+  YamlLoader:
+    owner: "@devman-kr"
+    status: planned
+    description: ".meta.yaml 파일을 YAML 라이브러리로 파싱하여 JavaScript 객체로 변환한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  HeaderExtractor:
+    owner: "@devman-kr"
+    status: planned
+    description: "meta 파일의 최상위 필드(graph, level, parent_node, parent_graph, description)를 추출한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  NodeMetaExtractor:
+    owner: "@devman-kr"
+    status: planned
+    description: "nodes 섹션에서 각 노드의 메타데이터(owner, status, description, source_file, child_graph 등)를 추출한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  EdgeMetaExtractor:
+    owner: "@devman-kr"
+    status: planned
+    description: "edges 섹션에서 각 엣지의 메타데이터(from, to, type, label, contract)를 추출한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  ContractResolver:
+    owner: "@devman-kr"
+    status: planned
+    description: "엣지의 type(requires, event 등)과 contract 문자열을 정규화하여 구조화된 계약 객체로 변환한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  ChildGraphResolver:
+    owner: "@devman-kr"
+    status: planned
+    description: "노드의 child_graph 상대 경로를 절대 경로로 변환하고, 해당 파일 존재 여부를 검증한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+  ResultAssembler:
+    owner: "@devman-kr"
+    status: planned
+    description: "추출된 헤더, 노드 메타, 엣지 메타, 계약, 자식 그래프 경로를 조합하여 ParsedMeta 객체를 생성한다."
+    source_file: "src/graphEngine/metaParser.ts"
+
+edges:
+  - from: YamlLoader
+    to: HeaderExtractor
+    label: "파싱된 YAML 객체 전달"
+  - from: YamlLoader
+    to: NodeMetaExtractor
+    label: "nodes 섹션 전달"
+  - from: YamlLoader
+    to: EdgeMetaExtractor
+    label: "edges 섹션 전달"
+  - from: HeaderExtractor
+    to: ResultAssembler
+    type: requires
+    contract: "MetaHeader { graph, level, parentNode, parentGraph, description } 반환"
+  - from: NodeMetaExtractor
+    to: ContractResolver
+    label: "노드별 메타데이터 전달"
+  - from: EdgeMetaExtractor
+    to: ContractResolver
+    label: "엣지별 메타데이터 전달"
+  - from: NodeMetaExtractor
+    to: ChildGraphResolver
+    label: "child_graph 경로 전달"
+  - from: ContractResolver
+    to: ResultAssembler
+    type: requires
+    contract: "정규화된 NodeMeta[], EdgeMeta[] 반환"
+  - from: ChildGraphResolver
+    to: ResultAssembler
+    type: requires
+    contract: "검증된 child_graph 절대 경로 맵 반환"

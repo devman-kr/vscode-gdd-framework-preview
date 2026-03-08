@@ -1,0 +1,6 @@
+graph TD
+    Extension[Extension Core<br/>VSCode 확장 진입점] -->|데이터 요청| GraphEngine[Graph Engine<br/>그래프 파싱/관리]
+    Extension -->|그래프 표시| Viewer[Viewer<br/>그래프 시각화/탐색]
+    Extension -->|프리뷰 표시| Preview[Preview<br/>.mermaid 프리뷰]
+    Viewer -->|파싱 요청| GraphEngine
+    Preview -->|파싱 요청| GraphEngine

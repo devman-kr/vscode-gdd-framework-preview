@@ -1,0 +1,71 @@
+graph: L2-node-interaction.mermaid
+level: 2
+parent_node: NodeInteraction
+parent_graph: L1-viewer.mermaid
+description: "NodeInteraction의 구현 상세. 노드 클릭 시 메타데이터를 조회하여 정보 패널에 표시하고, MetadataOpener 호출 또는 소스 파일 이동을 처리한다."
+last_updated: 2026-03-07
+
+nodes:
+  ClickReceiver:
+    owner: "@devman-kr"
+    status: planned
+    description: "WebviewManager의 EventRouter로부터 nodeClick 메시지를 수신하여 클릭된 노드 ID를 추출한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  MetaLookup:
+    owner: "@devman-kr"
+    status: planned
+    description: "GraphStore에서 클릭된 노드 ID에 해당하는 NodeMeta(description, owner, status, source_file 등)를 조회한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  InfoPanel:
+    owner: "@devman-kr"
+    status: planned
+    description: "조회된 메타데이터를 Webview 사이드 영역 또는 팝업으로 표시한다. 노드 설명, 상태, 소유자 등을 보여준다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  FallbackDisplay:
+    owner: "@devman-kr"
+    status: planned
+    description: "메타데이터가 없는 노드의 경우 노드 ID와 레이블만 표시한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  MetaOpenTrigger:
+    owner: "@devman-kr"
+    status: planned
+    description: "정보 패널에서 '메타 파일 열기' 버튼 클릭 시 MetadataOpener를 호출한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  SourceJump:
+    owner: "@devman-kr"
+    status: planned
+    description: "메타데이터에 source_file이 있을 경우 해당 소스 파일을 vscode.window.showTextDocument로 연다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+  HighlightManager:
+    owner: "@devman-kr"
+    status: planned
+    description: "클릭된 노드를 시각적으로 강조(하이라이트)하고, 이전 선택 노드의 강조를 해제한다."
+    source_file: "src/viewer/nodeInteraction.ts"
+
+edges:
+  - from: ClickReceiver
+    to: MetaLookup
+    type: requires
+    contract: "노드 ID를 전달하여 GraphStore.getNodeMeta(nodeId) 호출"
+  - from: MetaLookup
+    to: InfoPanel
+    type: requires
+    contract: "NodeMeta { description, owner, status, sourceFile, childGraph } 전달"
+  - from: MetaLookup
+    to: FallbackDisplay
+    label: "NodeMeta가 없을 때 노드 ID 전달"
+  - from: InfoPanel
+    to: MetaOpenTrigger
+    label: "메타 파일 열기 요청"
+  - from: InfoPanel
+    to: SourceJump
+    label: "source_file 경로 전달"
+  - from: ClickReceiver
+    to: HighlightManager
+    label: "선택된 노드 ID 전달"

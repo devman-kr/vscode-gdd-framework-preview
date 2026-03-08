@@ -1,0 +1,74 @@
+graph: L2-file-scanner.mermaid
+level: 2
+parent_node: FileScanner
+parent_graph: L1-graph-engine.mermaid
+description: "FileScanner의 구현 상세. .gdd.yaml 설정을 읽고, graph/ 디렉토리를 재귀 탐색하여 .mermaid/.meta.yaml 파일 쌍을 발견하고, 파일 변경을 감시한다."
+last_updated: 2026-03-07
+
+nodes:
+  ConfigLoader:
+    owner: "@devman-kr"
+    status: planned
+    description: ".gdd.yaml 파일에서 graph.directory 설정을 읽어 탐색 루트 경로를 결정한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  DirWalker:
+    owner: "@devman-kr"
+    status: planned
+    description: "지정된 graph 디렉토리를 재귀적으로 순회하며 모든 파일 경로를 수집한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  ExtFilter:
+    owner: "@devman-kr"
+    status: planned
+    description: "수집된 파일 목록에서 .mermaid와 .meta.yaml 확장자를 분류한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  PairMatcher:
+    owner: "@devman-kr"
+    status: planned
+    description: "같은 이름의 .mermaid와 .meta.yaml 파일을 1:1 쌍(GraphFilePair)으로 매칭한다. 쌍이 없는 파일은 누락으로 보고한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  MissingReport:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid만 있고 .meta.yaml이 없거나, 그 반대인 경우를 경고로 보고한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  FileWatcher:
+    owner: "@devman-kr"
+    status: planned
+    description: "VSCode FileSystemWatcher를 사용하여 graph/ 디렉토리의 파일 생성/수정/삭제를 감시한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+  ChangeEmitter:
+    owner: "@devman-kr"
+    status: planned
+    description: "파일 변경 감지 시 onDidChange 이벤트를 발행하여 GraphEngine 파이프라인을 재실행하도록 트리거한다."
+    source_file: "src/graphEngine/fileScanner.ts"
+
+edges:
+  - from: ConfigLoader
+    to: DirWalker
+    label: "graph 디렉토리 절대 경로 전달"
+  - from: DirWalker
+    to: ExtFilter
+    label: "전체 파일 경로 목록 전달"
+  - from: ExtFilter
+    to: PairMatcher
+    label: ".mermaid 경로 목록 전달"
+  - from: ExtFilter
+    to: PairMatcher
+    label: ".meta.yaml 경로 목록 전달"
+  - from: PairMatcher
+    to: MissingReport
+    label: "매칭 실패 파일 전달"
+  - from: PairMatcher
+    to: FileWatcher
+    type: requires
+    contract: "GraphFilePair { mermaidPath, metaPath, relativePath } 배열 반환"
+  - from: FileWatcher
+    to: ChangeEmitter
+    type: requires
+    contract: "FileChangeEvent { type: created|changed|deleted, pair: GraphFilePair } 발행"

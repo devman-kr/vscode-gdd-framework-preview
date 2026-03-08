@@ -1,0 +1,7 @@
+graph TD
+    WebviewManager[Webview 관리<br/>패널 생성/갱신] -->|HTML 생성| MermaidRenderer[Mermaid 렌더러<br/>그래프 렌더링]
+    MermaidRenderer -->|노드 클릭 이벤트| NodeInteraction[노드 인터랙션<br/>클릭 처리]
+    MermaidRenderer -->|노드 더블클릭 이벤트| Navigation[네비게이션<br/>레이어 이동]
+    NodeInteraction -->|meta.yaml 열기| MetadataOpener[메타데이터 오프너<br/>Split Editor]
+    Navigation -->|레이어 이동| WebviewManager
+    Navigation -->|뒤로가기| WebviewManager

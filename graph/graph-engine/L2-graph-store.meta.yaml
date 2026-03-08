@@ -1,0 +1,80 @@
+graph: L2-graph-store.mermaid
+level: 2
+parent_node: GraphStore
+parent_graph: L1-graph-engine.mermaid
+description: "GraphStore의 구현 상세. 빌드된 GddGraph 객체를 인메모리 캐시에 저장하고, 경로/노드 기반 조회와 계층 탐색 기능을 제공한다."
+last_updated: 2026-03-07
+
+nodes:
+  RegisterGraph:
+    owner: "@devman-kr"
+    status: planned
+    description: "TreeBuilder가 생성한 GddGraph 객체를 저장소에 등록한다. 기존 그래프가 있으면 교체한다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  GraphCache:
+    owner: "@devman-kr"
+    status: planned
+    description: "Map<string, GddGraph> 기반 인메모리 캐시. 키는 그래프 파일의 상대 경로이다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  QueryByPath:
+    owner: "@devman-kr"
+    status: planned
+    description: ".mermaid 파일의 상대 경로로 해당 GddGraph를 조회한다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  QueryByNode:
+    owner: "@devman-kr"
+    status: planned
+    description: "노드 ID로 해당 노드가 포함된 GddGraph를 조회한다. 전체 캐시를 검색한다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  InvalidateEvent:
+    owner: "@devman-kr"
+    status: planned
+    description: "FileScanner의 변경 이벤트를 수신하여 해당 경로의 캐시를 무효화하고 재빌드를 트리거한다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  TreeIndex:
+    owner: "@devman-kr"
+    status: planned
+    description: "전체 GddGraph를 L0→L1→L2 계층 구조로 색인한다. parent_graph/child_graph 관계를 기반으로 트리를 구성한다."
+    source_file: "src/graphEngine/graphStore.ts"
+
+  ResultProvider:
+    owner: "@devman-kr"
+    status: planned
+    description: "Viewer, Preview 등 외부 모듈에 그래프 조회 API를 제공한다. getGraph(), getNode(), getChildren() 등."
+    source_file: "src/graphEngine/graphStore.ts"
+
+edges:
+  - from: RegisterGraph
+    to: GraphCache
+    type: requires
+    contract: "GddGraph 객체를 경로 키로 캐시에 저장"
+  - from: GraphCache
+    to: QueryByPath
+    label: "경로 키로 캐시 조회"
+  - from: GraphCache
+    to: QueryByNode
+    label: "전체 캐시에서 노드 ID 검색"
+  - from: QueryByPath
+    to: ResultProvider
+    type: requires
+    contract: "GddGraph | undefined 반환"
+  - from: QueryByNode
+    to: ResultProvider
+    type: requires
+    contract: "GddGraph | undefined 반환"
+  - from: InvalidateEvent
+    to: GraphCache
+    label: "변경된 파일 경로의 캐시 엔트리 삭제"
+  - from: GraphCache
+    to: TreeIndex
+    type: requires
+    contract: "전체 GddGraph[] 전달하여 계층 색인 갱신"
+  - from: TreeIndex
+    to: ResultProvider
+    type: requires
+    contract: "getChildren(graphPath), getParent(graphPath) 반환"

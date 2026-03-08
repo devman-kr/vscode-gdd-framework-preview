@@ -1,0 +1,6 @@
+graph TD
+    FileScanner[파일 스캐너<br/>graph/ 디렉토리 탐색] -->|.mermaid 발견| MermaidParser[Mermaid 파서<br/>노드/엣지 추출]
+    FileScanner -->|.meta.yaml 발견| MetaParser[Meta 파서<br/>메타데이터 추출]
+    MermaidParser -->|노드/엣지 데이터| TreeBuilder[트리 빌더<br/>계층 구조 조립]
+    MetaParser -->|메타데이터| TreeBuilder
+    TreeBuilder -->|GddGraph 객체| GraphStore[그래프 저장소<br/>캐시/조회]

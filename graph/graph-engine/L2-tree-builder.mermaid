@@ -1,0 +1,8 @@
+graph TD
+    InputReceiver[입력 수신<br/>ParsedMermaid + ParsedMeta] -->|파싱 결과| NodeMerger[노드 병합<br/>Mermaid 노드 + Meta 매핑]
+    InputReceiver -->|파싱 결과| EdgeMerger[엣지 병합<br/>Mermaid 엣지 + Meta 매핑]
+    NodeMerger -->|GddNode 목록| Validator[정합성 검증<br/>mermaid-meta 일치 확인]
+    EdgeMerger -->|GddEdge 목록| Validator
+    Validator -->|검증 오류| ValidationReport[검증 리포트<br/>불일치 항목 보고]
+    Validator -->|검증 통과| HierarchyLinker[계층 연결<br/>parent-child 관계 설정]
+    HierarchyLinker -->|트리 구조| GraphAssembler[그래프 조립<br/>GddGraph 객체 생성]
