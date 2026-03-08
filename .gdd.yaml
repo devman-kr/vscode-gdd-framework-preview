@@ -1,0 +1,39 @@
+project:
+  name: "vscode-gdd-framework-preview"
+  version: "0.2.0"
+
+graph:
+  directory: "graph/"
+  format: "mermaid"
+
+levels:
+  L0:
+    max_nodes: 10
+    description: "VSCode GDD 확장 시스템 전체 도메인 맵"
+  L1:
+    max_nodes: 12
+    description: "도메인 내부 기능 흐름"
+  L2:
+    max_nodes: 15
+    description: "기능의 구현 단위"
+
+conventions:
+  node_naming: "PascalCase"
+  edge_labels: true
+  orphan_nodes: false
+  circular_dependency: false
+
+sync:
+  enforcement: warn
+  annotation_pattern: "@gdd-node"
+  source_directories:
+    - "src/"
+  ignore_patterns:
+    - "src/**/test/**"
+    - "src/**/types.ts"
+
+ai_context:
+  always_include:
+    - "graph/L0-system.mermaid"
+    - "graph/L0-system.meta.yaml"
+  max_context_files: 8
