@@ -8,43 +8,43 @@ last_updated: 2026-03-07
 nodes:
   FileReader:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: ".mermaid 파일을 UTF-8 텍스트로 로드한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   DirectionParser:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "첫 줄의 graph 키워드 뒤 방향(TD, LR, RL, BT)을 추출한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   LineSplitter:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "텍스트를 줄 단위로 분할하고, 주석(%%)과 빈 줄을 제거한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   NodeExtractor:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "각 라인에서 노드 정의를 정규식으로 추출한다. 노드 ID, 표시 레이블, 형태([], (), {})를 파싱한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   EdgeExtractor:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "각 라인에서 엣지 정의(-->. -.->)를 정규식으로 추출한다. from, to, label을 파싱한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   StyleClassifier:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "엣지의 화살표 스타일(실선 -->, 점선 -.->)을 분류한다. 점선은 이벤트/비동기 관계를 의미한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   ResultAssembler:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "추출된 방향, 노드, 엣지, 스타일 정보를 조합하여 ParsedMermaid 객체를 생성한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 

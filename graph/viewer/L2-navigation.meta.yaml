@@ -8,40 +8,46 @@ last_updated: 2026-03-07
 nodes:
   NodeDblClick:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Webview에서 노드 더블클릭 이벤트를 수신한다. 해당 노드에 child_graph가 있는지 확인한다."
 
   ChildResolver:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "meta.yaml의 child_graph 경로를 현재 그래프 파일 위치 기준으로 절대 경로로 resolve한다."
     source_file: "src/viewer/navigation.ts"
 
   NavigationStack:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "방문한 그래프 경로들의 스택. push(새 레이어 진입), pop(뒤로가기) 연산을 제공한다."
     source_file: "src/viewer/navigation.ts"
 
   BackButton:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Webview 상단 툴바의 뒤로가기 버튼. 클릭 시 NavigationStack.pop()을 호출한다."
+
+  MouseNavButton:
+    owner: "@devman-kr"
+    status: active
+    description: "마우스 사이드 버튼(Button3, 브라우저 뒤로가기)을 감지하여 NavigationStack.pop()을 호출한다. BackButton과 동일한 뒤로가기 동작을 마우스 사이드 버튼으로 트리거한다."
+    source_file: "src/viewer/mermaidRenderer.ts"
 
   ParentNode:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "L1~L2 그래프 최상단에 표시되는 Parent 항목. 더블클릭 시 parent_graph로 이동한다."
 
   StateManager:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "현재 표시 중인 그래프의 상태(경로, 레벨)를 추적하고, Webview 갱신을 트리거한다."
     source_file: "src/viewer/navigation.ts"
 
   WebviewUpdate:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "새 그래프 데이터로 Webview의 mermaid 렌더링을 갱신한다."
 
 edges:
@@ -55,6 +61,9 @@ edges:
   - from: BackButton
     to: NavigationStack
     label: "pop 요청"
+  - from: MouseNavButton
+    to: NavigationStack
+    label: "마우스 사이드 버튼으로 pop 요청"
   - from: ParentNode
     to: NavigationStack
     label: "parent_graph 경로로 pop/이동"

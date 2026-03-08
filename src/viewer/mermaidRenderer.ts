@@ -41,12 +41,16 @@ export function getMermaidRendererScript(
 
   // ── NodeDecorator: 메타 기반 classDef/class 주입 ──
   function decorateText(text) {
+    // completed 노드 레이블에 ✅ 접두어 주입
+    text = injectCompletedLabels(text);
+
     const lines = [text];
     const statusStyles = {
-      active:  'fill:#2d7d46,stroke:#1b5e2e,color:#fff',
-      planned: 'fill:#5b5b5b,stroke:#888,color:#ddd',
-      wip:     'fill:#b8860b,stroke:#996b00,color:#fff',
-      done:    'fill:#1a6b8a,stroke:#13506a,color:#fff',
+      active:    'fill:#2d7d46,stroke:#1b5e2e,color:#fff',
+      planned:   'fill:#5b5b5b,stroke:#888,color:#ddd',
+      wip:       'fill:#b8860b,stroke:#996b00,color:#fff',
+      done:      'fill:#1a6b8a,stroke:#13506a,color:#fff',
+      completed: 'fill:#1b8a3e,stroke:#146b2e,color:#fff,stroke-width:3px',
     };
 
     const usedStatuses = new Set();
@@ -74,6 +78,18 @@ export function getMermaidRendererScript(
     }
 
     return lines.join('\\n');
+  }
+
+  // completed 상태 노드의 레이블 앞에 ✅를 삽입한다.
+  function injectCompletedLabels(text) {
+    for (const [nodeId, meta] of Object.entries(nodeMeta)) {
+      if (meta.status !== 'completed') { continue; }
+      // 노드 정의 패턴: NodeId[ or NodeId([ or NodeId( or NodeId{ or NodeId[/
+      // PascalCase 노드 ID는 정규식 이스케이프 불필요
+      var re = new RegExp('(' + nodeId + '(?:\\\\(\\\\[|\\\\[/|\\\\[|\\\\(|\\\\{))');
+      text = text.replace(re, '$1\\u2705 ');
+    }
+    return text;
   }
 
   // ── ThemeResolver: VSCode 테마 감지 ──
@@ -210,6 +226,85 @@ export function getMermaidRendererScript(
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
+
+  // ── ZoomPanHandler: Ctrl+휠 줌, 중앙 버튼 팬 ──
+  (function() {
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    const MIN_SCALE = 0.2;
+    const MAX_SCALE = 5;
+    const ZOOM_SENSITIVITY = 0.002;
+
+    function applyTransform() {
+      container.style.transform =
+        'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+      container.style.transformOrigin = '0 0';
+    }
+
+    // Ctrl + 휠: 줌
+    container.addEventListener('wheel', function(e) {
+      if (!e.ctrlKey) { return; }
+      e.preventDefault();
+      var delta = -e.deltaY * ZOOM_SENSITIVITY;
+      var newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale * (1 + delta)));
+
+      // 마우스 포인터 기준 줌
+      var rect = container.getBoundingClientRect();
+      var mouseX = e.clientX - rect.left;
+      var mouseY = e.clientY - rect.top;
+      var ratio = newScale / scale;
+      translateX = mouseX - ratio * (mouseX - translateX);
+      translateY = mouseY - ratio * (mouseY - translateY);
+      scale = newScale;
+      applyTransform();
+    }, { passive: false });
+
+    // 중앙 버튼 드래그: 팬
+    var isPanning = false;
+    var panStartX = 0;
+    var panStartY = 0;
+    var panStartTX = 0;
+    var panStartTY = 0;
+
+    document.addEventListener('mousedown', function(e) {
+      if (e.button !== 1) { return; }
+      e.preventDefault();
+      isPanning = true;
+      panStartX = e.clientX;
+      panStartY = e.clientY;
+      panStartTX = translateX;
+      panStartTY = translateY;
+      document.body.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isPanning) { return; }
+      translateX = panStartTX + (e.clientX - panStartX);
+      translateY = panStartTY + (e.clientY - panStartY);
+      applyTransform();
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (e.button !== 1) { return; }
+      isPanning = false;
+      document.body.style.cursor = '';
+    });
+
+    // 중앙 버튼 기본 동작(자동 스크롤) 방지
+    document.addEventListener('auxclick', function(e) {
+      if (e.button === 1) { e.preventDefault(); }
+    });
+  })();
+
+  // ── MouseNavButton: 마우스 사이드 버튼으로 뒤로가기 ──
+  document.addEventListener('mouseup', function(e) {
+    // button 3 = 브라우저 뒤로가기 (마우스 사이드 버튼)
+    if (e.button === 3 && hasParent) {
+      e.preventDefault();
+      vscode.postMessage({ type: 'back' });
+    }
+  });
 
   // 빈 영역 클릭 시 info panel 숨김
   document.addEventListener('click', function(e) {

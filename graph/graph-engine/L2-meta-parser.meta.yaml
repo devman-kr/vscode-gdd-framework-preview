@@ -8,43 +8,43 @@ last_updated: 2026-03-07
 nodes:
   YamlLoader:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: ".meta.yaml 파일을 YAML 라이브러리로 파싱하여 JavaScript 객체로 변환한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   HeaderExtractor:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "meta 파일의 최상위 필드(graph, level, parent_node, parent_graph, description)를 추출한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   NodeMetaExtractor:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "nodes 섹션에서 각 노드의 메타데이터(owner, status, description, source_file, child_graph 등)를 추출한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   EdgeMetaExtractor:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "edges 섹션에서 각 엣지의 메타데이터(from, to, type, label, contract)를 추출한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   ContractResolver:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "엣지의 type(requires, event 등)과 contract 문자열을 정규화하여 구조화된 계약 객체로 변환한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   ChildGraphResolver:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "노드의 child_graph 상대 경로를 절대 경로로 변환하고, 해당 파일 존재 여부를 검증한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   ResultAssembler:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "추출된 헤더, 노드 메타, 엣지 메타, 계약, 자식 그래프 경로를 조합하여 ParsedMeta 객체를 생성한다."
     source_file: "src/graphEngine/metaParser.ts"
 

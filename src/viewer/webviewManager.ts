@@ -191,12 +191,14 @@ export class WebviewManager implements vscode.Disposable {
       justify-content: center;
       align-items: flex-start;
       min-height: calc(100vh - 50px);
-      overflow: auto;
+      overflow: hidden;
+      will-change: transform;
     }
     #graph-container svg {
       max-width: 100%;
       height: auto;
     }
+    body.panning { cursor: grabbing !important; }
     .error {
       color: var(--vscode-errorForeground, #f48771);
       padding: 16px;

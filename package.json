@@ -2,7 +2,7 @@
   "name": "vscode-gdd-framework-preview",
   "displayName": "GDD Framework Preview",
   "description": "Graph-Driven Development Framework for VSCode - .mermaid graph visualization with node interaction and layer navigation",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.85.0"
   },

@@ -4,6 +4,7 @@ graph TD
     ThemeResolver -->|테마 설정| RenderEngine[렌더링 엔진<br/>mermaid.render 실행]
     RenderEngine -->|SVG 출력| SvgInjector[SVG 주입<br/>DOM 컨테이너에 삽입]
     SvgInjector -->|SVG 노드| ClickBinder[클릭 바인더<br/>노드 이벤트 등록]
+    SvgInjector -->|SVG 컨테이너| ZoomPanHandler[줌/팬 핸들러<br/>Ctrl+휠 줌, 중앙버튼 팬]
     ClickBinder -->|클릭 이벤트| MessageSender[메시지 전송<br/>postMessage to Extension]
     ClickBinder -->|더블클릭 이벤트| MessageSender
     RenderEngine -->|렌더링 실패| ErrorOverlay[오류 오버레이<br/>에러 메시지 표시]

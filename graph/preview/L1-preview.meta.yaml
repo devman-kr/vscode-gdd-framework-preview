@@ -9,27 +9,27 @@ nodes:
   FileDetector:
     child_graph: L2-file-detector.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "VSCode의 activeTextEditor 변경 이벤트를 감시하여 .mermaid 파일이 활성화되었는지 감지한다."
     source_file: "src/preview/fileDetector.ts"
 
   TitleBarIcon:
     child_graph: L2-title-bar-icon.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "에디터 타이틀 바에 GDD 프리뷰 아이콘(그래프 모양)을 표시한다. package.json의 editor/title menu contribution으로 등록."
 
   PreviewPanel:
     child_graph: L2-preview-panel.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "프리뷰 아이콘 클릭 시 활성 .mermaid 파일의 내용을 WebviewPanel로 렌더링한다. meta.yaml이 존재하면 노드 인터랙션도 활성화."
     source_file: "src/preview/previewPanel.ts"
 
   MermaidRenderer:
     child_graph: L2-mermaid-renderer.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "Viewer 도메인의 MermaidRenderer를 재사용하여 프리뷰 패널에서 그래프를 렌더링한다."
 
 edges:

@@ -8,49 +8,49 @@ last_updated: 2026-03-07
 nodes:
   PanelCreate:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "vscode.window.createWebviewPanel로 WebviewPanel을 생성한다. viewType 'gddViewer'로 등록하고, 기존 패널이 있으면 reveal한다."
     source_file: "src/viewer/webviewManager.ts"
 
   OptionConfig:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Webview 옵션을 설정한다. enableScripts: true, localResourceRoots 지정, retainContextWhenHidden 설정."
     source_file: "src/viewer/webviewManager.ts"
 
   HtmlGenerator:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "mermaid.js CDN, 스타일시트, mermaid 텍스트, 노드 클릭 이벤트 핸들러 스크립트를 포함하는 HTML 템플릿을 조립한다."
     source_file: "src/viewer/webviewManager.ts"
 
   CspBuilder:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Webview의 Content-Security-Policy 메타 태그를 생성한다. script-src, style-src, img-src 등을 설정한다."
     source_file: "src/viewer/webviewManager.ts"
 
   ContentSetter:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "완성된 HTML 문자열을 webviewPanel.webview.html에 할당하여 렌더링한다."
     source_file: "src/viewer/webviewManager.ts"
 
   MessageHandler:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "webviewPanel.webview.onDidReceiveMessage를 통해 Webview에서 Extension으로 전달되는 메시지(노드 클릭, 더블클릭 등)를 수신한다."
     source_file: "src/viewer/webviewManager.ts"
 
   EventRouter:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "수신된 메시지의 type에 따라 NodeInteraction(클릭) 또는 Navigation(더블클릭)으로 분배한다."
     source_file: "src/viewer/webviewManager.ts"
 
   DisposeHandler:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "WebviewPanel이 닫힐 때(onDidDispose) 메시지 리스너, 이벤트 구독 등 리소스를 정리한다."
     source_file: "src/viewer/webviewManager.ts"
 

@@ -8,43 +8,43 @@ last_updated: 2026-03-07
 nodes:
   PanelFactory:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "vscode.window.createWebviewPanel로 WebviewPanel을 생성한다. 이미 열려 있으면 기존 패널을 재사용(reveal)한다."
     source_file: "src/preview/previewPanel.ts"
 
   ContentLoader:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "전달받은 URI로 .mermaid 파일의 텍스트 내용을 읽어온다. workspace.fs.readFile을 사용한다."
     source_file: "src/preview/previewPanel.ts"
 
   HtmlBuilder:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "mermaid 텍스트를 포함하는 Webview용 HTML 문서를 생성한다. mermaid.js CDN 스크립트와 CSP 메타 태그를 포함한다."
     source_file: "src/preview/previewPanel.ts"
 
   WebviewSetter:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "생성된 HTML 문자열을 webviewPanel.webview.html에 할당하여 렌더링한다."
     source_file: "src/preview/previewPanel.ts"
 
   ColumnResolver:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "현재 활성 에디터의 ViewColumn을 기준으로 프리뷰 패널을 옆 컬럼(Beside)에 표시할 위치를 결정한다."
     source_file: "src/preview/previewPanel.ts"
 
   SyncWatcher:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "vscode.workspace.onDidChangeTextDocument를 감시하여, 열린 .mermaid 파일이 수정되면 프리뷰를 자동 갱신한다."
     source_file: "src/preview/previewPanel.ts"
 
   DisposeHandler:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "WebviewPanel이 닫힐 때(onDidDispose) 이벤트 리스너와 리소스를 정리한다."
     source_file: "src/preview/previewPanel.ts"
 

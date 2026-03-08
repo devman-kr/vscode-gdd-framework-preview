@@ -9,35 +9,35 @@ nodes:
   FileScanner:
     child_graph: L2-file-scanner.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "워크스페이스의 graph/ 디렉토리를 재귀적으로 탐색하여 .mermaid와 .meta.yaml 파일 쌍을 발견한다."
     source_file: "src/graphEngine/fileScanner.ts"
 
   MermaidParser:
     child_graph: L2-mermaid-parser.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: ".mermaid 파일의 텍스트를 파싱하여 노드 ID, 레이블, 엣지 정보를 추출한다."
     source_file: "src/graphEngine/mermaidParser.ts"
 
   MetaParser:
     child_graph: L2-meta-parser.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: ".meta.yaml 파일을 파싱하여 노드별 메타데이터(child_graph, owner, status 등)를 추출한다."
     source_file: "src/graphEngine/metaParser.ts"
 
   TreeBuilder:
     child_graph: L2-tree-builder.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "MermaidParser와 MetaParser의 결과를 조합하여 GddGraph 객체를 생성한다. 노드-메타데이터 매핑, parent-child 관계 설정."
     source_file: "src/graphEngine/treeBuilder.ts"
 
   GraphStore:
     child_graph: L2-graph-store.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "빌드된 GddGraph 객체들을 캐시하고, 경로 기반으로 조회 기능을 제공한다."
     source_file: "src/graphEngine/graphStore.ts"
 

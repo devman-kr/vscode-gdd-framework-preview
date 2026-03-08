@@ -6,28 +6,28 @@ last_updated: 2026-03-07
 nodes:
   Extension:
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "VSCode 확장 진입점. 명령 등록, Provider 초기화, 이벤트 바인딩을 담당한다."
     tech_stack: ["TypeScript", "VSCode Extension API"]
 
   GraphEngine:
     child_graph: graph-engine/L1-graph-engine.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: ".mermaid 및 .meta.yaml 파일을 파싱하고 GDD 트리 구조를 관리하는 데이터 레이어"
     tech_stack: ["TypeScript", "yaml"]
 
   Viewer:
     child_graph: viewer/L1-viewer.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: "Mermaid.js 기반 그래프 시각화, 노드 인터랙션(클릭/더블클릭), 레이어 간 탐색 기능"
     tech_stack: ["TypeScript", "Mermaid.js", "VSCode Webview API"]
 
   Preview:
     child_graph: preview/L1-preview.mermaid
     owner: "@devman-kr"
-    status: active
+    status: completed
     description: ".mermaid 파일을 에디터에서 열었을 때 Markdown Preview처럼 그래프를 미리 볼 수 있는 기능"
     tech_stack: ["TypeScript", "Mermaid.js", "VSCode Webview API"]
 

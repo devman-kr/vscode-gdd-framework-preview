@@ -8,37 +8,37 @@ last_updated: 2026-03-07
 nodes:
   EditorListener:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "vscode.window.onDidChangeActiveTextEditor 이벤트를 구독하여 활성 에디터 변경을 감지한다."
     source_file: "src/preview/fileDetector.ts"
 
   ExtChecker:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "활성 에디터의 파일 확장자가 .mermaid인지 판별한다."
     source_file: "src/preview/fileDetector.ts"
 
   ContextReset:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: ".mermaid 파일이 아닐 때 vscode.commands.executeCommand('setContext', 'gdd.mermaidActive', false)를 호출하여 타이틀바 아이콘을 숨긴다."
     source_file: "src/preview/fileDetector.ts"
 
   MetaProbe:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "활성 .mermaid 파일과 동일 이름의 .meta.yaml 파일이 존재하는지 파일시스템에서 확인한다."
     source_file: "src/preview/fileDetector.ts"
 
   ContextSet:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "vscode.commands.executeCommand('setContext', 'gdd.mermaidActive', true)를 호출하여 타이틀바 아이콘을 표시한다. meta 존재 여부도 함께 설정한다."
     source_file: "src/preview/fileDetector.ts"
 
   EventEmitter:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: ".mermaid 파일 활성화 시 onMermaidFileActivated 이벤트를 발행하여 다른 모듈에 알린다."
     source_file: "src/preview/fileDetector.ts"
 

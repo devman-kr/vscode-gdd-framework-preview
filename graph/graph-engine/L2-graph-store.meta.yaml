@@ -8,43 +8,43 @@ last_updated: 2026-03-07
 nodes:
   RegisterGraph:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "TreeBuilder가 생성한 GddGraph 객체를 저장소에 등록한다. 기존 그래프가 있으면 교체한다."
     source_file: "src/graphEngine/graphStore.ts"
 
   GraphCache:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Map<string, GddGraph> 기반 인메모리 캐시. 키는 그래프 파일의 상대 경로이다."
     source_file: "src/graphEngine/graphStore.ts"
 
   QueryByPath:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: ".mermaid 파일의 상대 경로로 해당 GddGraph를 조회한다."
     source_file: "src/graphEngine/graphStore.ts"
 
   QueryByNode:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "노드 ID로 해당 노드가 포함된 GddGraph를 조회한다. 전체 캐시를 검색한다."
     source_file: "src/graphEngine/graphStore.ts"
 
   InvalidateEvent:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "FileScanner의 변경 이벤트를 수신하여 해당 경로의 캐시를 무효화하고 재빌드를 트리거한다."
     source_file: "src/graphEngine/graphStore.ts"
 
   TreeIndex:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "전체 GddGraph를 L0→L1→L2 계층 구조로 색인한다. parent_graph/child_graph 관계를 기반으로 트리를 구성한다."
     source_file: "src/graphEngine/graphStore.ts"
 
   ResultProvider:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "Viewer, Preview 등 외부 모듈에 그래프 조회 API를 제공한다. getGraph(), getNode(), getChildren() 등."
     source_file: "src/graphEngine/graphStore.ts"
 

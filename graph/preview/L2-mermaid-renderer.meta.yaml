@@ -8,37 +8,37 @@ last_updated: 2026-03-07
 nodes:
   TextReceiver:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "PreviewPanel 또는 Viewer로부터 mermaid 원본 텍스트를 수신한다."
 
   SyntaxValidator:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "mermaid.parse()를 호출하여 텍스트의 구문 유효성을 사전 검증한다. 무효 시 오류 메시지를 추출한다."
 
   ThemeApplier:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "VSCode의 현재 색상 테마(다크/라이트)를 감지하여 mermaid 테마(dark, default)를 결정한다."
 
   MermaidInit:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "mermaid.initialize({ theme, startOnLoad: false })를 호출하여 렌더링 엔진을 초기화한다."
 
   SvgRenderer:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "mermaid.render(id, text)를 호출하여 mermaid 텍스트를 SVG 문자열로 변환한다."
 
   DomInjector:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "렌더링된 SVG 문자열을 Webview의 DOM 컨테이너에 innerHTML로 삽입한다."
 
   ErrorRenderer:
     owner: "@devman-kr"
-    status: planned
+    status: completed
     description: "구문 오류 또는 렌더링 실패 시 에러 메시지를 Webview에 사용자 친화적으로 표시한다."
 
 edges:
