@@ -1,0 +1,56 @@
+{
+  "name": "vscode-gdd-framework-preview",
+  "displayName": "GDD Framework Preview",
+  "description": "Graph-Driven Development Framework for VSCode - .mermaid graph visualization with node interaction and layer navigation",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Visualization"],
+  "activationEvents": [
+    "workspaceContains:.gdd.yaml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gdd.openPreview",
+        "title": "GDD: Open Graph Preview",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "gdd.openViewer",
+        "title": "GDD: Open Graph Viewer",
+        "icon": "$(type-hierarchy)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "gdd.mermaidActive",
+          "command": "gdd.openPreview",
+          "group": "navigation"
+        },
+        {
+          "when": "gdd.mermaidActive && gdd.hasMeta",
+          "command": "gdd.openViewer",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "dependencies": {
+    "yaml": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.0"
+  }
+}

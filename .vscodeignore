@@ -1,0 +1,11 @@
+.docs/**
+.gdd.yaml
+graph/**
+src/**
+node_modules/.package-lock.json
+node_modules/@types/**
+.gitignore
+tsconfig.json
+CLAUDE.md
+**/*.ts
+**/*.map
